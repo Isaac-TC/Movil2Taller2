@@ -26,7 +26,7 @@ export default function LoginScreen({ navigation }: any) {
                         titulo = 'Error en la contraseña';
                         mensaje = 'Contraseña incorrecta. Por favor, verifica los datos ingresados.';
                         break;
-                    case 'auth/user-not-found':
+                    case 'auth/invalid-email':
                         titulo = 'Usuario no encontrado';
                         mensaje = 'Por favor verifica el email ingresado.';
                         break;
@@ -88,20 +88,33 @@ export default function LoginScreen({ navigation }: any) {
                 <Text style={styles.registerText}>¿Olvidaste la contraseña? Haz clic aquí</Text>
             </TouchableOpacity>
 
-            <Modal visible={ver} transparent={false}>
-                <View style={styles.modalContainer}>
-                    <Text style={styles.modalTitle}>Restablecer Contraseña</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Ingresa tu correo"
-                        placeholderTextColor="#aaa"
-                        onChangeText={(texto) => setcorreoRestablecer(texto)}
-                        value={correoRestablecer}
-                    />
-                    <Button title="Enviar" onPress={restablecer} />
-                    <Button title="Cerrar" onPress={() => setver(!ver)} color="red" />
-                </View>
-            </Modal>
+            <Modal visible={ver} transparent={true}>
+    <View style={styles.modalOverlay}>
+        <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Restablecer Contraseña</Text>
+            <TextInput
+                style={styles.input}
+                placeholder="Ingresa tu correo"
+                placeholderTextColor="#aaa"
+                onChangeText={(texto) => setcorreoRestablecer(texto)}
+                value={correoRestablecer}
+            />
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.modalButton} onPress={restablecer}>
+                    <Text style={styles.modalButtonText}>Enviar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[styles.modalButton, styles.closeButton]}
+                    onPress={() => setver(!ver)}
+                >
+                    <Text style={styles.modalButtonText}>Cerrar</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    </View>
+</Modal>
+
+
         </View>
     );
 }
@@ -161,15 +174,50 @@ const styles = StyleSheet.create({
         color: '#4CAF50',
         textDecorationLine: 'underline',
     },
-    modalContainer: {
+    modalOverlay: {
         flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semitransparente
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    modalContainer: {
+        width: '80%',
+        backgroundColor: '#fff',
+        borderRadius: 10,
         padding: 20,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
+        elevation: 5,
     },
     modalTitle: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
+    },
+   
+    buttonContainer: {
+        flexDirection: 'row', // Organiza botones en fila
+        justifyContent: 'space-between',
+        marginTop: 20,
+        width: '100%',
+    },
+    modalButton: {
+        flex: 1, // Distribuye espacio entre botones
+        backgroundColor: '#4CAF50',
+        paddingVertical: 12,
+        marginHorizontal: 5,
+        borderRadius: 8,
+        alignItems: 'center',
+    },
+    closeButton: {
+        backgroundColor: 'red', // Estilo diferente para el botón de cerrar
+    },
+    modalButtonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });
