@@ -19,8 +19,10 @@ export default function LoginScreen({ navigation }: any) {
                 const errorCode = error.code;
                 let titulo;
                 let mensaje;
+                console.log(errorCode);
+                //console.log(errorMessage);
 
-                // Manejo de errores con switch
+                
                 switch (errorCode) {
                     case 'auth/missing-password':
                         titulo = 'Error en la contraseña';
